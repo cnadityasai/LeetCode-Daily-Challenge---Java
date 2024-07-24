@@ -1,0 +1,49 @@
+ // My solution (Beats 73%)
+
+class Solution {
+    public int[] sortJumbled(int[] mapping, int[] nums) {
+        int n = nums.length; 
+        int[] res = new int[n];
+        Integer[] index = new Integer[n];
+
+        int i=0;
+        for(int num: nums){
+            int temp = num;
+            int currNumber = 0;
+            int ctr = 0;
+            if(temp == 0)
+                currNumber = mapping[0];
+            else{
+                while(temp != 0){
+                int remainder = temp % 10;
+                remainder = mapping[remainder];
+                currNumber = remainder * (int)Math.pow(10, ctr) + currNumber;
+                temp = temp / 10;
+                ctr++;
+            }
+            } 
+            res[i] = currNumber;
+            i++;
+        }
+
+        for(i=0; i<n;i++){
+            index[i] = i;
+        }
+
+        Arrays.sort(index, new Comparator<Integer>(){
+            public int compare(Integer a, Integer b){
+                if(res[a] == res[b])
+                    return a - b;
+                return res[a] - res[b];
+            }
+        });
+
+        for(i=0; i<n; i++){
+            res[i] = nums[index[i]];
+        }
+
+        nums = res;
+
+        return nums;
+    }
+}
