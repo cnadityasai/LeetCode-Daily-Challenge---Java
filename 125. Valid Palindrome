@@ -1,0 +1,40 @@
+// My solution
+
+class Solution {
+    public boolean isPalindrome(String s) {
+        s = s.toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
+        for(int i=0; i<s.length()/2; i++){
+            if(s.charAt(i) != s.charAt(s.length()-i-1)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+// Optimised Solution
+
+class Solution {
+    public boolean isPalindrome(String s) {
+        int start = 0;
+        int end = s.length()-1;
+
+        while(start <= end){
+            int startLetter = s.charAt(start);
+            int endLetter = s.charAt(end);
+            if(!Character.isLetterOrDigit(startLetter))
+                start++;
+            else if(!Character.isLetterOrDigit(endLetter))
+                end--;
+            else {
+                if(Character.toLowerCase(startLetter) != Character.toLowerCase(endLetter))
+                    return false;
+                start++;
+                end--;
+            }
+        }
+
+        return true;
+    }
+}
