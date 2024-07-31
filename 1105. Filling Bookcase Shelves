@@ -1,0 +1,31 @@
+class Solution {
+    int totalBooks;
+    int newShelfWidth;
+    public int findMinHeight(int index, int[][] books, int curShelfWidth, int curShelfHeight, int[][] dp){
+        int maxHeight = Math.max(curShelfHeight, books[index][1]);
+
+        if(index == totalBooks-1){
+            if(books[index][0] <= curShelfWidth){
+                return maxHeight;
+            }
+            return curShelfHeight + books[index][1];
+        }
+
+        if(dp[index][curShelfWidth] != 0){
+            return dp[index][curShelfWidth];
+        }
+
+        int sameShelf = Integer.MAX_VALUE;
+        if(books[index][0] <= curShelfWidth){
+            sameShelf = findMinHeight(index+1, books, curShelfWidth-books[index][0], maxHeight, dp);
+        }
+        int nextShelf = curShelfHeight + findMinHeight(index+1, books, newShelfWidth-books[index][0], books[index][1], dp);
+        return dp[index][curShelfWidth] = Math.min(sameShelf, nextShelf);
+    }
+    public int minHeightShelves(int[][] books, int shelfWidth) {
+        totalBooks = books.length;
+        newShelfWidth = shelfWidth;
+        int[][] dp = new int[totalBooks][newShelfWidth+1];
+        return findMinHeight(0, books, shelfWidth, 0, dp);
+    }
+}
