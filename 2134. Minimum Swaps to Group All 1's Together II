@@ -1,0 +1,63 @@
+// Not optimised solution - TLE error
+
+class Solution {
+    public int minSwaps(int[] nums) {
+        int n = nums.length;
+        int windowLen = 0;
+        for(int i: nums){
+            if(i==1)
+                windowLen++;
+        }
+
+        int minSwaps = Integer.MAX_VALUE;
+
+        for(int i=0; i<n; i++){
+            int temp = windowLen;
+            int zeroCount = 0;
+            for(int j=i; j<i+windowLen; j++){
+                int index = j%n;
+                if(nums[index] == 0)
+                    zeroCount++;
+            }
+            minSwaps = Math.min(minSwaps, zeroCount);
+        }
+
+        return minSwaps;
+    }
+}
+
+// Optimised Solution
+
+class Solution {
+    public int minSwaps(int[] nums) {
+        int n = nums.length;
+        int windowSize = 0;
+        for(int i: nums){
+            windowSize += i;
+        }
+
+        int curZero = 0;
+        for(int i=0; i<windowSize; i++){
+            if(nums[i] == 0)
+                curZero++;
+        }
+
+        int minZero = curZero;
+        int start =0;
+        int end = windowSize -1;
+
+        while(start<n){
+            if(nums[start] == 0)
+                curZero--;
+            start++;
+
+            end++;
+            if(nums[end%n] == 0)
+                curZero++;
+
+            minZero = Math.min(minZero, curZero);
+        }
+
+        return minZero;
+    }
+}
