@@ -1,0 +1,62 @@
+// Not Optimised Solution 
+
+class Solution {
+    public boolean canBeEqual(int[] target, int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int n = target.length;
+
+        for(int i=0; i<n; i++){
+            map.put(target[i], map.getOrDefault(target[i], 0) + 1);
+        }
+
+        for(int i=0; i<n; i++){
+            if(map.containsKey(arr[i])){
+                map.put(arr[i], map.get(arr[i]) -1);
+                if(map.get(arr[i]) == 0)
+                    map.remove(arr[i]);
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+// Optimised Solution 1
+
+class Solution {
+    public boolean canBeEqual(int[] target, int[] arr) {
+        Arrays.sort(target);
+        Arrays.sort(arr);
+
+        for(int i=0; i<target.length; i++){
+            if(arr[i] != target[i])
+                return false;
+        }
+
+        return true;
+    }
+}
+
+// Optimised Solution 2 - 100%
+
+class Solution {
+    public boolean canBeEqual(int[] target, int[] arr) {
+        int[] count = new int[1001];
+        int n = target.length;
+
+        for(int i=0; i<n; i++){
+            count[arr[i]] += 1;
+        }
+
+        for(int ele: target){
+            if(count[ele] == 0)
+                return false;
+            count[ele] -= 1;
+        }
+
+        return true;
+    }
+}
+
