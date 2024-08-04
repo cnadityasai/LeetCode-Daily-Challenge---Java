@@ -1,0 +1,57 @@
+// Brute Force - mostly it is expected to be the answer (beats 80%)
+
+class Solution {
+    public int rangeSum(int[] nums, int n, int left, int right) {
+        int[] sum = new int[n*(n+1)/2];
+
+        for(int i=0, k=0; i<n; i++){
+            int currSum = 0;
+            for(int j=i; j<n; j++){
+                currSum += nums[j];
+                sum[k++] = currSum;
+            }
+        }
+
+        Arrays.sort(sum);
+        int res = 0; 
+        final int mod = (int) 1e9 + 7;
+        for(int i=left-1; i<right; i++){
+            res =  (res + sum[i]) % mod;
+        }
+
+        return res;
+    }
+}
+
+// Optimised solution
+
+class Solution {
+    public int rangeSum(int[] nums, int n, int left, int right) {
+        Queue<int[]> queue = new PriorityQueue<>(new Comparator<int[]>(){
+            public int compare(int a[], int b[]){
+                return a[0] - b[0];
+            }
+        });
+
+        for(int i=0; i<n; i++){
+            queue.offer(new int[]{nums[i], i});
+        }
+        int sum = 0;
+        int mod = (int) 1e9 + 7;
+
+        for(int i=0; i<right; i++){
+            int cur[] = queue.poll();
+            if(i >= left-1){
+                sum = (sum + cur[0]) % mod;
+            }
+
+            if(cur[1]+1 < n){
+                cur[1]++;
+                cur[0] += nums[cur[1]];
+                queue.offer(cur);
+            }
+        }
+
+        return sum; 
+    }
+}
