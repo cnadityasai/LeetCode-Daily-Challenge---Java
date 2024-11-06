@@ -1,0 +1,23 @@
+class Solution {
+    public boolean canSortArray(int[] nums) {
+        int pmax = 0, cmin = 0, cmax = 0;
+        int pcnt = 0;
+
+        for(int v: nums){
+            int ccnt = Integer.bitCount(v);
+
+            if(pcnt == ccnt){
+                cmin = cmin > v ? v : cmin;
+                cmax = cmax < v ? v : cmax;
+            } else if (cmin < pmax){
+                return false;
+            } else {
+                pmax = cmax;
+                cmin = cmax = v;
+                pcnt = ccnt;
+            }
+        }
+
+        return cmin >= pmax;
+    }
+}
