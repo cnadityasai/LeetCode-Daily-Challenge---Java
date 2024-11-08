@@ -1,0 +1,58 @@
+// not optimal solution (n^2 time complexity)
+
+class Solution {
+    public int[] getMaximumXor(int[] nums, int maximumBit) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        int result = 0;
+        
+        for(int num: nums){
+            result ^= num;
+        }
+
+        int limit = (int)Math.pow(2, maximumBit);
+        for(int i=n-1; i>=0; i--){
+            int maxVal = 0;
+            int maxK = 0;
+            for(int k=0; k<limit; k++){
+                int temp = result ^ k;
+                if(temp > maxVal){
+                    maxVal = temp;
+                    maxK = k;
+                }
+            }
+            ans[n-i-1] = maxK;
+            result ^= nums[i];
+        }
+
+        for(int num: ans){
+            System.out.println(num);
+        }
+
+        return ans;
+    }
+}
+
+
+// optimal solution (n time complexity)
+
+class Solution {
+    public int[] getMaximumXor(int[] nums, int maximumBit) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        int result = 0;
+        
+        for(int num: nums){
+            result ^= num;
+        }
+
+        int limit = (int)Math.pow(2, maximumBit);
+        for(int i=n-1; i>=0; i--){
+            int maxK = result ^ (limit-1);
+            ans[n-i-1] = maxK;
+            result ^= nums[i];
+        }
+        
+        return ans;
+    }
+}
