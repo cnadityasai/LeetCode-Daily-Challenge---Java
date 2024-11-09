@@ -1,0 +1,39 @@
+// TLE Error - Not optimal solution
+
+class Solution {
+    public long minEnd(int n, int x) {
+        long[] ans = new long[n];
+
+        ans[0] = x;
+        long curNum = ans[0] + 1;
+        long curAnd = ans[0];
+
+        for(int i=1; i<n; i++){
+            while(true){
+                long temp = curNum & curAnd;
+                if(temp == x){
+                    ans[i] = curNum++;
+                    break;
+                } 
+                curNum++;
+            }
+        }
+
+        return ans[n-1];
+    }
+}
+
+// Somewhat Optimal Solution
+
+class Solution {
+    public long minEnd(int n, int x) {
+        long ans = x;
+        n-=1;
+
+        while(n-->0){
+            ans = (ans+1) | x;
+        }
+
+        return ans;
+    }
+}
