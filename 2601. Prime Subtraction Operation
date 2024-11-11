@@ -1,0 +1,51 @@
+// Own Solution - Somewhat Optimal
+
+class Solution {
+    public boolean primeSubOperation(int[] nums) {
+        int maxUnsortedIndex = 0;
+
+        for(int i=1; i<nums.length; i++){
+            if(nums[i] <= nums[i-1]){
+                maxUnsortedIndex = i-1;
+            }
+        }
+
+        for(int i=0; i<maxUnsortedIndex+1; i++){
+            int ele = nums[i];
+            for(int j=ele-1; j>=2; j--){
+                boolean isPrime = checkPrime(j);
+                if(isPrime){
+                    if(i == 0){
+                        nums[i] -= j;
+                        break;
+                    }
+                    int temp = nums[i] - j;
+                    if(temp > nums[i-1]){
+                        nums[i] -= j;
+                        break;
+                    }
+                }
+            }
+        }
+
+        for(int i=1; i<nums.length; i++){
+            if(nums[i-1] >= nums[i]){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkPrime(int num){
+        if(num == 2) return true;
+        if(num % 2 == 0) return false;
+
+        for(int i=3; i<=Math.sqrt(num); i+=2){
+            if(num % i == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
