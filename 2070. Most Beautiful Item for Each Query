@@ -1,0 +1,73 @@
+// My solution - not optimal (Failed 2 test cases)
+
+class Solution {
+    public int[] maximumBeauty(int[][] items, int[] queries) {
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        int[] ans = new int[queries.length];
+
+        // Arrays.sort(items, (a, b) -> a[0] - b[0]);
+
+        for(int item[]: items){
+            int price = item[0];
+            int beauty = item[1];
+
+            if(!hashMap.containsKey(price)){
+                hashMap.put(price, beauty);
+            } else {
+                int temp = hashMap.get(price);
+                hashMap.put(price, temp > beauty ? temp: beauty);
+            }
+
+        }
+
+        int j = 0;
+        int max = 0;
+        for(int query: queries){
+            max = 0;
+            for(int key: hashMap.keySet()){
+                if(key <= query){
+                    max = Math.max(max, hashMap.getOrDefault(key, 0));
+                }
+            }
+            ans[j] = max;
+            j++;
+        }
+
+        return ans;
+    }
+}
+
+// Optimised Solution
+
+class Solution {
+    public int[] maximumBeauty(int[][] items, int[] queries) {
+        int maxI = Integer.MAX_VALUE;
+        ArrayList<int[]> res = new ArrayList<>();
+        res.add(new int[] {0, 0, maxI});
+        int[] ans = new int[queries.length];
+
+        Arrays.sort(items, (a,b) -> a[0] - b[0]);
+
+        for(int item[]: items){
+            int price = item[0];
+            int beauty = item[1];
+            int lastSet[] = res.get(res.size() - 1);
+
+            if(lastSet[1] < beauty){
+                res.add(new int[] {price, beauty, maxI});
+                lastSet[2] = price;
+            }
+        }
+
+        for(int j=0; j<queries.length; j++){
+            for(int i=res.size()-1; i>=0; i--){
+                if(res.get(i)[0] <= queries[j]){
+                    ans[j] = res.get(i)[1];
+                    break;
+                }
+            }
+        }
+
+        return ans;
+    }
+}
