@@ -1,0 +1,39 @@
+class Solution {
+    public int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
+        int g[][] = new int[m][n];
+
+        for(int guard[]: guards){
+            g[guard[0]][guard[1]] = 2;
+        }
+
+        for(int wall[]: walls){
+            g[wall[0]][wall[1]] = 2;
+        }
+
+        int directions[] = {-1, 0, 1, 0, -1};
+
+        for(int guard[]: guards){
+            for(int k=0; k<4; k++){
+                int x = guard[0], y = guard[1];
+                int dx = directions[k], dy = directions[k+1];
+
+                while(x + dx >= 0 && x + dx < m && y + dy >= 0 && y + dy < n && g[x+dx][y+dy] < 2){
+                    x+=dx;
+                    y+=dy;
+                    g[x][y] = 1;
+                }
+            }
+        }
+
+        int unguardedCount = 0;
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(g[i][j] == 0){
+                    unguardedCount++;
+                }
+            }
+        }
+
+        return unguardedCount;
+    }
+}
