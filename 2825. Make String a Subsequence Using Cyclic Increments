@@ -1,0 +1,28 @@
+class Solution {
+    public boolean canMakeSubsequence(String str1, String str2) {
+        int n1 = str1.length();
+        int n2 = str2.length();
+
+        if(n2 > n1) return false;
+
+        int i=0;
+        int j=0;
+
+        while(i<n1 && j<n2){
+            char c = str1.charAt(i);
+            char next = (char)((c - 'a' + 1) % 26 + 'a');
+            if(c == str2.charAt(j) || next == str2.charAt(j)){
+                i++;
+                j++;
+            } else {
+                i++;
+            }
+        }
+
+        if(j == n2){
+            return true;
+        }
+
+        return false;
+    }
+}
