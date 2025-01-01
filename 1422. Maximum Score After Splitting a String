@@ -1,0 +1,21 @@
+class Solution {
+    public int maxScore(String s) {
+        int oneCount = 0;
+        int zeroCount = 0;
+        for(char c: s.toCharArray()){
+            if(c == '1')
+                oneCount++;
+        }
+
+        int score = 0;
+        for(int i=0; i<s.length()-1; i++){
+            if(s.charAt(i) == '0')
+                zeroCount++;
+            else
+                oneCount--;
+            score = Math.max(score, zeroCount + oneCount);
+        }
+
+        return score;
+    }
+}
