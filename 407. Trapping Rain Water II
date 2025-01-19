@@ -1,0 +1,58 @@
+class Solution {
+    public int trapRainWater(int[][] heightMap) {
+        int[][] directions = {{0,-1}, {0,1}, {1,0}, {-1,0}};
+        int rows = heightMap.length;
+        int cols = heightMap[0].length;
+
+        if(rows < 3 || cols < 3) return 0;
+        int unvisitedCells = rows * cols;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> a[0] - b[0]);
+        boolean[][] visitedCells = new boolean[rows][cols];
+
+        for(int i=0; i<rows; i++){
+            pq.offer(new int[]{heightMap[i][0], i, 0});
+            pq.offer(new int[]{heightMap[i][cols-1], i, cols-1});
+            unvisitedCells -= 2;
+            visitedCells[i][0] = true;
+            visitedCells[i][cols-1] = true;
+        }
+
+        for(int i=1; i<cols-1; i++){
+            pq.offer(new int[]{heightMap[0][i], 0, i});
+            pq.offer(new int[]{heightMap[rows-1][i], rows-1, i});
+            unvisitedCells -= 2;
+            visitedCells[0][i] = true;
+            visitedCells[rows-1][i] = true;
+        }
+
+        int trappedWater = 0;
+        int waterLevel = 0;
+
+        while(!pq.isEmpty() && unvisitedCells != 0){
+            int[] current = pq.poll();
+            int currentHeight = current[0];
+            int currentRow = current[1];
+            int currentCol = current[2];
+            waterLevel = Math.max(waterLevel, currentHeight);
+
+            for(int i=0; i<4; i++){
+                int neighborRow = currentRow + directions[i][0];
+                int neighborCol = currentCol + directions[i][1];
+                if(isValidCell(neighborRow, neighborCol, rows, cols) && !visitedCells[neighborRow][neighborCol]){
+                    int neighborHeight = heightMap[neighborRow][neighborCol];
+                    if(neighborHeight < waterLevel){
+                        trappedWater += waterLevel - neighborHeight;
+                    }
+                    pq.offer(new int[]{neighborHeight, neighborRow, neighborCol});
+                    visitedCells[neighborRow][neighborCol] = true;
+                    unvisitedCells--;
+                }
+            }
+        }
+        return trappedWater;
+    }
+
+    public boolean isValidCell(int nrow, int ncol, int rows, int cols){
+        return nrow >= 0 && ncol >= 0 && nrow < rows && ncol < cols;
+    }
+}
