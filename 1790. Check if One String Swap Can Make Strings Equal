@@ -1,0 +1,24 @@
+class Solution {
+    public boolean areAlmostEqual(String s1, String s2) {
+        int incorrectChar = 0;
+        char[] charArray1 = new char[26];
+        char[] charArray2 = new char[26];
+
+        for(int i=0; i<s1.length(); i++){
+            char c1 = s1.charAt(i);
+            char c2 = s2.charAt(i);
+            charArray1[c1 - 'a']++;
+            charArray2[c2 - 'a']++;
+            if(c1 != c2)
+                incorrectChar++;
+        }
+
+        for(int i=0; i<26; i++){
+            if(charArray1[i] != charArray2[i]){
+                return false;
+            }
+        }
+
+        return incorrectChar > 2? false: true;
+    }
+}
