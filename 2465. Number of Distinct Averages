@@ -1,0 +1,23 @@
+class Solution {
+    public int distinctAverages(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        Set<Float> set = new HashSet<>();
+
+        int start = 0;
+        int end = n-1;
+        int distinctCount = 0;
+
+        while(start < end){
+            float avg = (float)(nums[start] + nums[end]) / 2;
+            if(!set.contains(avg)){
+                distinctCount++;
+                set.add(avg);
+            }
+            start++;
+            end--;
+        }
+
+        return distinctCount;
+    }
+}
