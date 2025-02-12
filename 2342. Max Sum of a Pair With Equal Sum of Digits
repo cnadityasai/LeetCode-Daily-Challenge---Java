@@ -1,0 +1,28 @@
+class Solution {
+    public int maximumSum(int[] nums) {
+        int[] map = new int[82];
+        int ans = -1;
+
+        for(int num: nums){
+            int sum = getDigitSum(num);
+            if(map[sum] > 0){
+                int prevNum = map[sum];
+                ans = Math.max(prevNum + num, ans);
+                map[sum] = Math.max(prevNum, num);
+            } else {
+                map[sum] = num;
+            }
+        }
+        return ans;
+    }
+
+    public int getDigitSum(int num){
+        int sum = 0;
+        while(num > 0){
+            int rem = num % 10;
+            sum += rem;
+            num /= 10;
+        }
+        return sum;
+    }
+}
