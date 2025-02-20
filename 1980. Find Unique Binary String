@@ -1,0 +1,37 @@
+class Solution {
+    Set<String> set;
+    String res;
+    public String findDifferentBinaryString(String[] nums) {
+        set = new HashSet<>();
+        res = "";
+        int len = nums[0].length();
+        for(String num: nums){
+            set.add(num);
+        }
+        backtrack(len, "");
+        return res;
+    }
+
+    private void backtrack(int len, String cur){
+        if(cur.length() == len){
+            if(!set.contains(cur)){
+                res = cur;
+                return;
+            }
+            return;
+        }
+
+        backtrack(len, cur + "0");
+        backtrack(len, cur + "1");
+    }
+}
+
+/* 
+    Steps
+    1. Insert all the elements in a set
+    2. Get the length of the string in the array.
+    3. Based on the length generate each combination and check
+        if present in the set or not.
+    4. if present return that
+    5. else keep going until found.
+*/
