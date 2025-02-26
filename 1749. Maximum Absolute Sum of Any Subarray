@@ -1,0 +1,27 @@
+class Solution {
+    public int maxAbsoluteSum(int[] nums) {
+        int maxNegSum = Integer.MAX_VALUE;
+        int maxPosSum = Integer.MIN_VALUE;
+        int curSum = 0;
+
+        for(int num: nums){
+            curSum += num;
+            if(curSum > maxPosSum)
+                maxPosSum = curSum;
+            if(curSum < 0)
+                curSum = 0;
+        }
+
+        curSum = 0;
+        for(int num: nums){
+            curSum += num;
+            if(curSum < maxNegSum)
+                maxNegSum = curSum;
+            if(curSum > 0)
+                curSum = 0;
+        }
+        maxNegSum = Math.abs(maxNegSum);
+
+        return maxPosSum > maxNegSum? maxPosSum:maxNegSum;
+    }
+}
