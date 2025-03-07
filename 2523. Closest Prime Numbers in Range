@@ -1,0 +1,82 @@
+class Solution {
+    public int[] closestPrimes(int left, int right) {
+        boolean[] sieve = new boolean[right+1];
+        Arrays.fill(sieve, true);
+        sieve[0] = sieve[1] = false;
+
+        for(int i=2; i<= Math.sqrt(right); i++){
+            if(sieve[i]){
+                for(int j=i*i; j<= right; j+=i){
+                    sieve[j] = false;
+                }
+            }
+        }
+
+        ArrayList<Integer> primes = new ArrayList<>();
+
+        for(int i=left; i<=right; i++){
+            if(sieve[i])
+                primes.add(i);
+        }
+
+        if(primes.size() < 2){
+            return new int[]{-1, -1};
+        }
+
+        int minGap = Integer.MAX_VALUE;
+        int[] result = {-1, -1};
+
+        for(int i=1; i<primes.size();i++){
+            int gap = primes.get(i) - primes.get(i-1);
+            if(gap < minGap){
+                minGap = gap;
+                result[0] = primes.get(i-1);
+                result[1] = primes.get(i);
+            }
+        }
+
+        return result;
+    }
+}
+
+// TLE
+
+class Solution {
+    public int[] closestPrimes(int left, int right) {
+        List<Integer> arr = new ArrayList<>();
+        int[] ans = {-1,-1};
+        int minDiff = Integer.MAX_VALUE;
+        for(int i=left; i<=right; i++){
+            boolean prime = checkPrime(i);
+            if(prime){
+                arr.add(i);
+            }
+        }
+
+        for(int i=1; i<arr.size(); i++){
+            int diff = arr.get(i) - arr.get(i-1);
+            if(diff < minDiff){
+                minDiff = diff;
+                ans[0] = arr.get(i-1);
+                ans[1] = arr.get(i);
+            }
+        }
+
+        return ans;
+    }
+
+    private boolean checkPrime(int i){
+        if(i == 1) return false;
+
+        boolean flag = true;
+
+        for(int j=2; j<=i/2; j++){
+            if(i % j == 0){
+                flag = false;
+                break;
+            }
+        }
+
+        return flag;
+    }
+}
