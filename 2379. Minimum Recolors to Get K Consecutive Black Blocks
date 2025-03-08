@@ -1,0 +1,40 @@
+// More efficient
+class Solution {
+    public int minimumRecolors(String blocks, int k) {
+        int n = blocks.length();
+        int min = 0;
+        int minBalls = Integer.MAX_VALUE;
+
+        for(int i=0; i<k; i++){
+            if(blocks.charAt(i)=='W')min++;
+        }
+        minBalls = Math.min(minBalls, min);
+
+        for(int i=k; i<n; i++){
+            if(blocks.charAt(i-k)=='W')min--;
+            if(blocks.charAt(i)=='W')min++;
+            minBalls = Math.min(minBalls, min);
+        }
+
+        return minBalls;
+    }
+}
+
+// Less efficient
+class Solution {
+    public int minimumRecolors(String blocks, int k) {
+        int n = blocks.length();
+        int minOp = Integer.MAX_VALUE;
+        int len = n - k + 1;
+        for(int i=0; i<len; i++){
+            int min = 0;
+            for(int j=i; j<k+i; j++){
+                if(blocks.charAt(j) == 'W')
+                    min++;
+            }
+            minOp = Math.min(minOp, min);
+        }
+
+        return minOp;
+    }
+}
