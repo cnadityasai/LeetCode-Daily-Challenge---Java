@@ -1,0 +1,35 @@
+// Slightly efficient solution
+
+class Solution {
+    public boolean divideArray(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+
+        for(int num: nums){
+            if(!set.contains(num))
+                set.add(num);
+            else
+                set.remove(num);
+        }
+
+        return set.size() > 0? false : true;
+    }
+}
+
+// Less efficient solution
+
+class Solution {
+    public boolean divideArray(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for(int num: nums){
+            map.put(num, map.getOrDefault(num, 0)+ 1);
+        }
+
+        for(int num: map.keySet()){
+            if(map.get(num) % 2 != 0)
+                return false;
+        }
+
+        return true;
+    }
+}
