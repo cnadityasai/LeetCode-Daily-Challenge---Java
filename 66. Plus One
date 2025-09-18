@@ -1,0 +1,48 @@
+// My solution (I think there is a better way to do it)
+
+class Solution {
+    public int[] plusOne(int[] digits) {
+        int rem = 1;
+        int newLen = digits.length;
+        for(int i=digits.length-1; i>=0; i--){
+            if(digits[i] == 9 && rem == 1){
+                rem = 1;
+                digits[i] = 0;
+            } else if (rem == 1) {
+                digits[i]++;
+                rem = 0;
+            }
+        }
+        
+        int[] res = new int[rem == 1? newLen + 1: newLen];
+
+        res[0] = rem;
+        for(int i=1; i<res.length; i++){
+            res[i] = digits[i-1];
+        }
+
+        return rem == 1? res:digits;
+    }
+}
+
+// Better solution (Optimised but similar concept)
+
+class Solution {
+    public int[] plusOne(int[] digits) {
+        
+        for(int i=digits.length - 1; i>=0; i--){
+            if(digits[i] < 9){
+                digits[i]++;
+                return digits; 
+            } else {
+                digits[i] = 0;
+            }
+        }
+
+        digits = new int[digits.length + 1];
+        digits[0] = 1;
+        return digits;
+    }
+}
+
+// 1 9 9 9 9  -   2 0 0 0 0
