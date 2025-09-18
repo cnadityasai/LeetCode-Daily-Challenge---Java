@@ -1,0 +1,93 @@
+// My solution
+
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) return "";
+        
+        Trie tree = new Trie();
+        StringBuilder sb = new StringBuilder();
+
+        for(int i=0; i<strs.length; i++){
+            tree.insert(strs[i]);
+        }
+
+        return tree.findCommonPrefix(tree.root, sb);
+    }
+}
+
+class TreeNode {
+    TreeNode[] children = new TreeNode[26];
+    boolean isEndOfWord;
+}
+
+class Trie {
+    public TreeNode root;
+
+    public Trie(){
+        root = new TreeNode();
+    }
+
+    public void insert(String str){
+        TreeNode node = root;
+        for(char c: str.toCharArray()){
+            int idx = c - 'a';
+            if(node.children[idx] == null) {
+                node.children[idx] = new TreeNode();
+            }
+            node = node.children[idx];
+        }
+        node.isEndOfWord = true;
+    }
+
+    public int noOfChildren(TreeNode node){
+        int count = 0;
+        for(int i=0; i<26; i++){
+            if(node.children[i] != null){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public String findCommonPrefix(TreeNode node, StringBuilder sb){
+        int count = noOfChildren(node);
+        if(count > 1 || node.isEndOfWord)
+            return sb.toString();
+        else {
+            for(int i=0; i<26; i++){
+                if(node.children[i] != null){
+                    sb.append((char)(i+'a'));
+                    return findCommonPrefix(node.children[i], sb);
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
+
+// Optimised solution
+
+/*
+  Explanation: We arrange the strings in lexicological order and then compare the first and the last element of the array as
+  they will the once that have the maximum differences if any.
+
+  If any of the characters does not match we just return the stringbuilder object as a string at that point itself else we 
+  append the current character to the result (stringbuilder object)
+*/
+
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        Arrays.sort(strs);
+        StringBuilder sb = new StringBuilder();
+        String first = strs[0];
+        String last = strs[strs.length - 1];
+
+        for(int i=0; i<Math.min(first.length(), last.length()); i++){
+            if(first.charAt(i) != last.charAt(i))
+                return sb.toString();
+            sb.append(first.charAt(i));
+        }
+
+        return sb.toString();
+    }
+}
