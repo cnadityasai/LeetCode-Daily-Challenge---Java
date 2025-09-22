@@ -1,0 +1,52 @@
+// My solution (Too many for loops)
+
+class Solution {
+    public int maxFrequencyElements(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int maxFreq = 0;
+        int maxCount = 0;
+
+        for(int i: nums){
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+
+        for(int i: map.keySet()){
+            if(map.get(i) >= maxFreq){
+                maxFreq = map.get(i);
+            }
+        }
+
+        for(int i: map.keySet()){
+            if(maxFreq == map.get(i)){
+                maxCount++;
+            }
+        }
+
+        return maxCount * maxFreq;
+    }
+}
+
+
+// Optimal Solution
+
+class Solution {
+    public int maxFrequencyElements(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int maxFreq = 0;
+        int res = 0;
+
+        for(int i: nums){
+            int freq = map.getOrDefault(i, 0) + 1;
+            map.put(i, freq);
+
+            if(freq > maxFreq){
+                maxFreq = freq;
+                res = freq;
+            } else if (freq == maxFreq){
+                res += freq;
+            }
+        }
+
+        return res;
+    }
+}
