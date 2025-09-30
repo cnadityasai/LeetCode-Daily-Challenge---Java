@@ -1,0 +1,25 @@
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int rows = triangle.size();
+        Integer[][] dp = new Integer[rows][rows];
+        return dfs(0, 0, triangle, dp);
+    }
+
+    public int dfs(int row, int col, List<List<Integer>> triangle, Integer[][] dp){
+        if(row == triangle.size() - 1){
+            return triangle.get(row).get(col);
+        }
+
+        if(dp[row][col] != null)
+            return dp[row][col];
+        
+        int left = dfs(row+1, col, triangle, dp);
+        int right = dfs(row+1, col+1, triangle, dp);
+
+        dp[row][col] = triangle.get(row).get(col) + Math.min(left, right);
+
+        return dp[row][col];
+    }
+
+    
+}
