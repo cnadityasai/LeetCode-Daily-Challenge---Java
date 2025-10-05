@@ -1,0 +1,18 @@
+// My solution
+
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<List<Integer>> ans = new ArrayList<>(rowIndex);
+
+        for(int row=0; row<=rowIndex; row++){
+            ans.add(new ArrayList<>());
+            ans.get(row).add(1);
+            for(int col=1; col<row; col++){
+                ans.get(row).add(ans.get(row-1).get(col-1) + ans.get(row-1).get(col));
+            }
+            if(row > 0) ans.get(row).add(1);
+        }
+
+        return ans.get(rowIndex);
+    }
+}
