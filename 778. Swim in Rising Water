@@ -1,0 +1,34 @@
+class Solution {
+    public int swimInWater(int[][] grid) {
+        int[][] dirs = {{1,0}, {0,1}, {-1,0}, {0,-1}};
+        int rows = grid.length;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        boolean[][] visited = new boolean[rows][rows];
+        int minMaxHeight = 0;
+
+        pq.offer(new int[]{grid[0][0], 0, 0});
+
+        while(!pq.isEmpty()){
+            int[] ele = pq.poll();
+            int height = ele[0];
+            int r = ele[1];
+            int c = ele[2];
+            // visited[r][c] = true;
+            minMaxHeight = Math.max(minMaxHeight, height);
+
+            if(r == rows-1 && c == rows-1) return minMaxHeight;
+
+            for(int[] dir: dirs){
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+
+                if(nr>=0 && nr<rows && nc>=0 && nc<rows && visited[nr][nc] != true){
+                    visited[nr][nc] = true;
+                    pq.offer(new int[]{grid[nr][nc], nr, nc});
+                }
+            }
+        }
+
+        return minMaxHeight;
+    }
+}
